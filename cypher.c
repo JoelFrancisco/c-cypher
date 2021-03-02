@@ -5,101 +5,113 @@
 
 int main(int argc, char *argv[]) 
 {
-    char alphabet[26] = "abcdefghijklmnopqrstuvwxyz";
-    char capital_alphabet[26] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
     char *arg_word = argv[1];
-    int length = strlen(arg_word);
 
-    int key;
-    key = atoi(argv[2]);
-
-    char *numbers;
-    numbers = (char*)malloc(sizeof(char) * (length + 1));
-
-    char *word;
-    word = (char*)malloc(sizeof(char) * (length + 1));
-
-    for (int i = 0; i < strlen(arg_word); i++)
+    if (argc == 3) 
     {
-        if(isdigit(arg_word[i]) != 0)
-            strncat(numbers, &arg_word[i], 1);
-        else
-            strncat(word, &arg_word[i], 1);
-    }
+        char alphabet[26] = "abcdefghijklmnopqrstuvwxyz";
+        char capital_alphabet[26] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    char *answer;
-    answer = (char*)malloc(sizeof(char) * (length + 1));
-    
-    int index;
+        int length = strlen(arg_word);
 
-    for (int letter = 0; letter < strlen(word); letter++)
-    {
-        for (int i = 0; i < 26; i++)
+        int key;
+        key = atoi(argv[2]);
+
+        char *numbers;
+        numbers = (char*)malloc(sizeof(char) * (length + 1));
+
+        char *word;
+        word = (char*)malloc(sizeof(char) * (length + 1));
+
+        for (int i = 0; i < strlen(arg_word); i++)
         {
-            if (word[letter] == alphabet[i])
+            if(isdigit(arg_word[i]) != 0)
+                strncat(numbers, &arg_word[i], 1);
+            else
+                strncat(word, &arg_word[i], 1);
+        }
+
+        char *answer;
+        answer = (char*)malloc(sizeof(char) * (length + 1));
+        
+        int index;
+
+        for (int letter = 0; letter < strlen(word); letter++)
+        {
+            for (int i = 0; i < 26; i++)
             {
-                index = i;
+                if (word[letter] == alphabet[i])
+                {
+                    index = i;
 
-                if (key > 0)
-                {
-                    for (int j = 0; j < key; j++)
+                    if (key > 0)
                     {
-                        if (index+1 == 26)
-                            index = 0;
-                        else
-                            index++;
+                        for (int j = 0; j < key; j++)
+                        {
+                            if (index+1 == 26)
+                                index = 0;
+                            else
+                                index++;
+                        }
                     }
-                }
-                else 
-                {
-                    for (int j = 0; j > key; j--)
+                    else 
                     {
-                        if (index-1 == -1)
-                            index = 26;
-                        index --;
+                        for (int j = 0; j > key; j--)
+                        {
+                            if (index-1 == -1)
+                                index = 26;
+                            index --;
+                        }
                     }
+                    
+                    strncat(answer, &alphabet[index], 1);
                 }
-                
-                strncat(answer, &alphabet[index], 1);
-            }
-            else if (word[letter] == capital_alphabet[i])
-            {
-                index = i;
+                else if (word[letter] == capital_alphabet[i])
+                {
+                    index = i;
 
-                if (key > 0)
-                {
-                    for (int j = 0; j < key; j++)
+                    if (key > 0)
                     {
-                        if (index+1 == 26)
-                            index = 0;
-                        else 
-                            index++;
+                        for (int j = 0; j < key; j++)
+                        {
+                            if (index+1 == 26)
+                                index = 0;
+                            else 
+                                index++;
+                        }
                     }
-                }
-                else
-                {
-                    for (int j = 0; j > key; j--)
+                    else
                     {
-                        if (index-1 == -1)
-                            index = 26;
-                        index--;
+                        for (int j = 0; j > key; j--)
+                        {
+                            if (index-1 == -1)
+                                index = 26;
+                            index--;
+                        }
                     }
-                }
 
-                strncat(answer, &capital_alphabet[index], 1);
+                    strncat(answer, &capital_alphabet[index], 1);
+                }
             }
         }
+        
+        free(word);
+
+        answer = strcat(answer, numbers);
+
+        printf("%s\n", answer);
+
+        free(numbers);
+        free(answer);
     }
-    
-    free(word);
-
-    answer = strcat(answer, numbers);
-
-    printf("%s\n", answer);
-
-    free(numbers);
-    free(answer);
+    else if ((argc == 2)&&(strcmp(argv[1], "-h") == 0))
+    {
+        printf("Use: cypher [Something to be ciphered]...[number to act as a key]\nUse negative numbers to decipher\n");
+    }
+    else 
+    {
+        printf("Execute with the -h flag to discover which arguments to pass\n");
+    }
 
     return 0;
 }
